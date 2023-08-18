@@ -4,7 +4,7 @@ In this project, we will continue working with the Bank Marketing dataset. We wi
 
 ## Architectural Diagram
 
-<img src="./screenshots/project_architecture.png" alt="project_architecture" width="800"/>
+<img src="./project_architecture.png" alt="project_architecture" width="800"/>
 
 ## Key Steps
 

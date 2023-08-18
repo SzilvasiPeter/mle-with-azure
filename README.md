@@ -5,3 +5,7 @@ This repository contains the code for completing the MLE with Azure Udacity Nano
 1. [Using Azure Machine Learning](./1_Using_Azure_Machine_Learning/README.md)
 
 2. [Machine Learning Operations](./2_Machine_Learning_Operations/README.md)
+
+# LICENSE
+
+MIT
