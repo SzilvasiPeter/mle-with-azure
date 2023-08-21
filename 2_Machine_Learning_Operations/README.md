@@ -38,24 +38,26 @@ The screenshots can be found under the `./screenshots` folder:
 ## Tips and Tricks
 
 - Compute cluster
-    - At the second step, the compute cluster name is typod. Use the `STANDARD_D2_V2` virtual machine instead of `STANDARD_D12_V2` because you will not have permission to create it.
-    - Set the minimum node to 1 and change priority from **Dedicated** to **Low Priority** which saves compute cost.
+  - At the second step, the compute cluster name is typod. Use the `STANDARD_D2_V2` virtual machine instead of `STANDARD_D12_V2` because you will not have permission to create it.
+  - Set the minimum node to 1 and change priority from **Dedicated** to **Low Priority** which saves compute cost.
 - Model deployment
-    - Navigate to **Jobs** > **Model** tab > press **Deploy** button
-    - Select the compute type as `Azure Container Instance` and check in the **Enable Logging** and the **Enable Applications Insights** under the advanced settings.
+  - Navigate to **Jobs** > **Model** tab > press **Deploy** button
+  - Select the compute type as `Azure Container Instance` and check in the **Enable Logging** and the **Enable Applications Insights** under the advanced settings.
+- Run Widget
+  - If you can not see the Widget output, change the browser to Microsoft Edge.
 - Python and Bash scripts
-    - Execute the *Python scripts* with the **Windows Command Prompt** because it will freeze if you use Git Bash.
-    - Execute the *Bash scripts* with the **Git Bash** because Windows Command Prompt was no WSL therefore the `bash` command will not work.
+  - Execute the *Python scripts* with the **Windows Command Prompt** because it will freeze if you use Git Bash.
+  - Execute the *Bash scripts* with the **Git Bash** because Windows Command Prompt was no WSL therefore the `bash` command will not work.
 - Endpoint script
-    - Retrieve the authentication information from the **Endpoints** > **Consume** tab.
-    - Copy and assign the **REST endpoint** value to the `scoring_uri` variable.
-    - Copy and assign the one of the **Authentication** key to the `key` variable.
-    - Make sure that the `data` dictionary match with the example data that is provided under the **Consume** tab. Otherwise, you will got error in the response.
+  - Retrieve the authentication information from the **Endpoints** > **Consume** tab.
+  - Copy and assign the **REST endpoint** value to the `scoring_uri` variable.
+  - Copy and assign the one of the **Authentication** key to the `key` variable.
+  - Make sure that the `data` dictionary match with the example data that is provided under the **Consume** tab. Otherwise, you will got error in the response.
 - Swagger UI
-    - First, download the `swagger.json` under the **Endpoints** > **Details** tab > **Swagger URI** section. In the Udacity VM, both `wget` and `curl` did not work for me so create an empty `swagger.json` file and open the URI and copy the content to the JSON file.
-    - You need to change the port from 80 to other port that is more than 8000 (e.g. 9000) otherwise the [Swagger UI webpage](./screenshots/swagger_browser_port_80.png) will only show "It works" text. Go to the `swagger/swagger.sh` script and change the port at the `-p` option.
-    - Execute both the `serve.py` and the `swagger.sh` script before opening the SwaggerUI (<http://localhost>) webpage. Then update the explore URL to <http://localhost:8000/swagger.json> and click on the **Explore** button.
+  - First, download the `swagger.json` under the **Endpoints** > **Details** tab > **Swagger URI** section. In the Udacity VM, both `wget` and `curl` did not work for me so create an empty `swagger.json` file and open the URI and copy the content to the JSON file.
+  - You need to change the port from 80 to other port that is more than 8000 (e.g. 9000) otherwise the [Swagger UI webpage](./screenshots/swagger_browser_port_80.png) will only show "It works" text. Go to the `swagger/swagger.sh` script and change the port at the `-p` option.
+  - Execute both the `serve.py` and the `swagger.sh` script before opening the SwaggerUI (<http://localhost>) webpage. Then update the explore URL to <http://localhost:8000/swagger.json> and click on the **Explore** button.
 - Apache Benchmark
-    - Similarly to the endpoint script, get the authentication information.
-    - Replace the `REPLACE_WITH_KEY` with the `Primary Key` or with the `Secondary Key` authentication key.
-    - Replace the `http://REPLACE_WITH_API_URL/score` with the **REST endpoint** URL value.
+  - Similarly to the endpoint script, get the authentication information.
+  - Replace the `REPLACE_WITH_KEY` with the `Primary Key` or with the `Secondary Key` authentication key.
+  - Replace the `http://REPLACE_WITH_API_URL/score` with the **REST endpoint** URL value.
