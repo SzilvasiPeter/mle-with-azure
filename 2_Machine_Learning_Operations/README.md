@@ -8,7 +8,7 @@ In this project, we will continue working with the Bank Marketing dataset. We wi
 
 ## Key Steps
 
-In the initial step, we establish authentication. Next, we perform an Automated ML Experiment. Once completed, we deploy the most optimal model and enable logging. Subsequently, we generate Swagger Documentation and proceed to consume model endpoints. We then create and publish a pipeline, ensuring seamless workflow. Lastly, comprehensive documentation is prepared to encompass the entire process.
+In the initial step, we download the training dataset by using an Azure blob storage link. Next, we perform an Automated ML Experiment. We are logging the metrics and model data during the expirement. Before publishing the endpoint, we get the testing dataset to test the best model. After retrieving the best model, we measure the performance with confusion matrix which is provided by the `scikit-learn` library. We then publish the pipeline that enables a REST endpoint to rerun the pipeline from any HTTP request. Note that, we need to authenticate first if we would like to execute the pipeline using the endpoint. 
 
 ## Screen Recording
 
@@ -18,15 +18,21 @@ The link to the screen recording of the project: https://youtu.be/n904NpzQUE4
 
 The screenshots can be found under the `./screenshots` folder:
 1. [Registered Dataset](./screenshots/registered_dataset.png)
-1. [Experiment Completed](./screenshots/experiment_completed.png)
-1. [Best Model](./screenshots/best_model.png)
-1. [Application Insights Enabled](./screenshots/application_insights_enabled.png)
-1. [Logs Output](./screenshots/logs_output.png)
-1. [SwaggerUI Bad Port](./screenshots/swagger_browser_port_80.png)
-1. [SwaggerUI Good Port](./screenshots/swagger_browser_port_9000.png)
-1. [SwaggerUI Terminal](./screenshots/swagger_terminal.png)
-1. [Endpoint Output](./screenshots/endpoint_output.png)
-1. [Apache Benchmark Output](./screenshots/apache_benchmark.png)
+2. [Experiment Running](./screenshots/experiment_running.png)
+3. [Experiment Completed](./screenshots/experiment_completed.png)
+4. [Pipeline Running](./screenshots/pipeline_running.png)
+5. [Pipeline Completed](./screenshots/pipeline_completed.png)
+6. [Pipeline Endpoints](./screenshots/pipeline_endpoints.png)
+7. [Pipeline Endpoint Overview](./screenshots/pipeline_endpoint_overview.png)
+8. [Pipline Widget](./screenshots/widget_pipeline_run.png)
+9. [Published Pipeline Widget](./screenshots/widget_published_pipeline_run.png)
+10. [Best Model](./screenshots/best_model.png)
+11. [Application Insights Enabled](./screenshots/application_insights_enabled.png)
+12. [Logs Output](./screenshots/logs_output.png)
+13. [SwaggerUI Terminal](./screenshots/swagger_terminal.png)
+14. [SwaggerUI Page](./screenshots/swagger_browser_port_9000.png)
+15. [Endpoint Output](./screenshots/endpoint_output.png)
+16. [Apache Benchmark Output](./screenshots/apache_benchmark.png)
 
 
 ## Tips and Tricks
@@ -47,7 +53,7 @@ The screenshots can be found under the `./screenshots` folder:
     - Make sure that the `data` dictionary match with the example data that is provided under the **Consume** tab. Otherwise, you will got error in the response.
 - Swagger UI
     - First, download the `swagger.json` under the **Endpoints** > **Details** tab > **Swagger URI** section. In the Udacity VM, both `wget` and `curl` did not work for me so create an empty `swagger.json` file and open the URI and copy the content to the JSON file.
-    - You need to change the port from 80 to other port that is more than 8000 (e.g. 9000) otherwise the Swagger UI webpage will only show "It works" text. Go to the `swagger/swagger.sh` script and change the port at the `-p` option.
+    - You need to change the port from 80 to other port that is more than 8000 (e.g. 9000) otherwise the [Swagger UI webpage](./screenshots/swagger_browser_port_80.png) will only show "It works" text. Go to the `swagger/swagger.sh` script and change the port at the `-p` option.
     - Execute both the `serve.py` and the `swagger.sh` script before opening the SwaggerUI (<http://localhost>) webpage. Then update the explore URL to <http://localhost:8000/swagger.json> and click on the **Explore** button.
 - Apache Benchmark
     - Similarly to the endpoint script, get the authentication information.
