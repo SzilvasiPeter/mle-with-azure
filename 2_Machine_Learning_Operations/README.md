@@ -8,7 +8,7 @@ In this project, we will continue working with the Bank Marketing dataset. We wi
 
 ## Key Steps
 
-In the initial step, we download the training dataset by using an Azure blob storage link. Next, we perform an Automated ML Experiment. We are logging the metrics and model data during the expirement. Before publishing the endpoint, we get the testing dataset to test the best model. After retrieving the best model, we measure the performance with confusion matrix which is provided by the `scikit-learn` library. We then publish the pipeline that enables a REST endpoint to rerun the pipeline from any HTTP request. Note that, we need to authenticate first if we would like to execute the pipeline using the endpoint. 
+In the initial step, we download the training dataset by using an Azure blob storage link. Next, we perform an Automated ML Experiment. We are logging the metrics and model data during the experiment. Before publishing the endpoint, we get the testing dataset to test the best model. After retrieving the best model, we measure the performance with the confusion matrix which is provided by the `scikit-learn` library. We then publish the pipeline that enables a REST endpoint to rerun the pipeline from any HTTP request. Note that, we need to authenticate first if we would like to execute the pipeline using the endpoint. 
 
 ## Screen Recording
 
@@ -38,8 +38,8 @@ The screenshots can be found under the `./screenshots` folder:
 ## Tips and Tricks
 
 - Compute cluster
-  - At the second step, the compute cluster name is typod. Use the `STANDARD_D2_V2` virtual machine instead of `STANDARD_D12_V2` because you will not have permission to create it.
-  - Set the minimum node to 1 and change priority from **Dedicated** to **Low Priority** which saves compute cost.
+  - In the second step, the compute cluster name has a typo. Use the `STANDARD_D2_V2` virtual machine instead of `STANDARD_D12_V2` because you will not have permission to create it.
+  - Set the minimum node to 1 and change the priority from **Dedicated** to **Low Priority** which saves compute cost.
 - Model deployment
   - Navigate to **Jobs** > **Model** tab > press **Deploy** button
   - Select the compute type as `Azure Container Instance` and check in the **Enable Logging** and the **Enable Applications Insights** under the advanced settings.
@@ -51,11 +51,11 @@ The screenshots can be found under the `./screenshots` folder:
 - Endpoint script
   - Retrieve the authentication information from the **Endpoints** > **Consume** tab.
   - Copy and assign the **REST endpoint** value to the `scoring_uri` variable.
-  - Copy and assign the one of the **Authentication** key to the `key` variable.
-  - Make sure that the `data` dictionary match with the example data that is provided under the **Consume** tab. Otherwise, you will got error in the response.
+  - Copy and assign one of the **Authentication** keys to the `key` variable.
+  - Make sure that the `data` dictionary match with the example data that is provided under the **Consume** tab. Otherwise, you will get an error in the response.
 - Swagger UI
   - First, download the `swagger.json` under the **Endpoints** > **Details** tab > **Swagger URI** section. In the Udacity VM, both `wget` and `curl` did not work for me so create an empty `swagger.json` file and open the URI and copy the content to the JSON file.
-  - You need to change the port from 80 to other port that is more than 8000 (e.g. 9000) otherwise the [Swagger UI webpage](./screenshots/swagger_browser_port_80.png) will only show "It works" text. Go to the `swagger/swagger.sh` script and change the port at the `-p` option.
+  - You need to change the port from 80 to another port that is more than 8000 (e.g. 9000) otherwise the [Swagger UI webpage](./screenshots/swagger_browser_port_80.png) will only show "It works" text. Go to the `swagger/swagger.sh` script and change the port at the `-p` option.
   - Execute both the `serve.py` and the `swagger.sh` script before opening the SwaggerUI (<http://localhost>) webpage. Then update the explore URL to <http://localhost:8000/swagger.json> and click on the **Explore** button.
 - Apache Benchmark
   - Similarly to the endpoint script, get the authentication information.

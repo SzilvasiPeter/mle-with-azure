@@ -6,6 +6,8 @@ This repository contains the code for completing the MLE with Azure Udacity Nano
 
 2. [Machine Learning Operations](./2_Machine_Learning_Operations/README.md)
 
+3. [Capstone](./3_Capstone/README.md)
+
 # LICENSE
 
 MIT
