@@ -1,4 +1,5 @@
 import argparse
+import json
 import time
 
 import tensorflow as tf
@@ -59,7 +60,7 @@ def main():
 
     # Train the model
     start_time = time.time()
-    model.fit(train_images, train_labels,
+    history = model.fit(train_images, train_labels,
               epochs=epochs, validation_data=(test_images, test_labels)
               )
     end_time = time.time()
@@ -67,13 +68,21 @@ def main():
     training_time = end_time - start_time
 
     # Evaluate the model
-    _, test_acc = model.evaluate(test_images, test_labels, verbose=2)
+    _, test_accuracy = model.evaluate(test_images, test_labels, verbose=2)
 
-    # Write the test accuracy and training time to a file
-    with open(f"./models/cifar_model_dropout_{dropout_values}.log", "w") as file:
-        file.write(f"Test Accuracy: {test_acc:.4f}")
-        file.write("")
-        file.write(f"Training time: {training_time:.4f} seconds")
+    # Save the training history to a JSON file
+    history_file = "./models/training_history.json"
+    with open(history_file, "w") as file:
+        json.dump(history.history, file)
+
+    # Save the test accuracy and training time to a JSON file
+    results = {
+        "test_accuracy": test_accuracy,
+        "training_time": training_time
+        }
+
+    with open(f"./models/cifar_model_dropout_{dropout_values}.json", "w") as file:
+        json.dump(results, file, indent=4)
 
     # Save the model
     model.save(f"./models/cifar_model_dropout_{dropout_values}.keras")
