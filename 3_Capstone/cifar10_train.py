@@ -7,15 +7,43 @@ from tensorflow.keras import layers, models
 from tensorflow.keras.datasets import cifar10
 from tensorflow.keras.utils import to_categorical
 
+# TODO: Comment out when using HyperDrive from azureml SDK
+# import numpy as np
+# from azureml.core.run import Run
+
+def save_to_json(model_history, test_accuracy, training_time):
+    history = model_history.history
+    results = {
+        "test_accuracy": test_accuracy,
+        "training_time": training_time
+        }
+    
+    with open("./models/training_history.json", "w") as file:
+        json.dump(history, file)
+
+    with open("./models/cifar_model_dropout.json", "w") as file:
+        json.dump(results, file, indent=4)
 
 def main():
     # Add arguments for HyperDrive hyper parameter sampling
     parser = argparse.ArgumentParser()
     parser.add_argument(
-        "--dropout_values",
+        "--dropout1",
+        type=float,
+        default=0.05,
+        help="The first layer dropout value for the CNN."
+    )
+    parser.add_argument(
+        "--dropout2",
         type=str,
-        default="0.05,0.125,0.25",
-        help="The dropout values seperated by commas for a three layer CNN."
+        default=0.125,
+        help="The second layer dropout value for the CNN."
+    )
+    parser.add_argument(
+        "--dropout3",
+        type=str,
+        default=0.25,
+        help="The third layer dropout value for the CNN."
     )
     parser.add_argument(
         "--epochs",
@@ -23,9 +51,19 @@ def main():
         default=10,
         help="Number of epochs to train the model"
     )
+
     args = parser.parse_args()
-    dropout_values = [float(value) for value in args.dropout_values.split(',')]
+    dropout1 = args.dropout1
+    dropout2 = args.dropout2
+    dropout3 = args.dropout3
     epochs = args.epochs
+
+    # TODO: Comment out when using HyperDrive from azureml SDK
+    # run = Run.get_context()
+    # run.log("First layer dropout value:", np.float(dropout1))
+    # run.log("Second layer dropout value:", np.float(dropout2))
+    # run.log("Third layer dropout value:", np.float(dropout3))
+    # run.log("Number of Epoch:", np.int(epochs))
 
     # Use seed for reproducibility
     tf.random.set_seed(42)
@@ -41,14 +79,14 @@ def main():
     model = models.Sequential([
         layers.Conv2D(32, (3, 3), activation='relu', input_shape=(32, 32, 3)),
         layers.MaxPooling2D((2, 2)),
-        layers.Dropout(dropout_values[0]),
+        layers.Dropout(dropout1),
         layers.Conv2D(64, (3, 3), activation='relu'),
         layers.MaxPooling2D((2, 2)),
-        layers.Dropout(dropout_values[1]),
+        layers.Dropout(dropout2),
         layers.Conv2D(64, (3, 3), activation='relu'),
         layers.Flatten(),
         layers.Dense(64, activation='relu'),
-        layers.Dropout(dropout_values[2]),
+        layers.Dropout(dropout3),
         layers.Dense(10, activation='softmax')
     ])
 
@@ -70,22 +108,14 @@ def main():
     # Evaluate the model
     _, test_accuracy = model.evaluate(test_images, test_labels, verbose=2)
 
-    # Save the training history to a JSON file
-    history_file = "./models/training_history.json"
-    with open(history_file, "w") as file:
-        json.dump(history.history, file)
+    # TODO: Comment out when using HyperDrive from azureml SDK
+    # run.log("accuracy", np.float(test_accuracy))
+    # run.log("training_time", np.float(training_time))
 
-    # Save the test accuracy and training time to a JSON file
-    results = {
-        "test_accuracy": test_accuracy,
-        "training_time": training_time
-        }
-
-    with open(f"./models/cifar_model_dropout_{dropout_values}.json", "w") as file:
-        json.dump(results, file, indent=4)
+    save_to_json(history, test_accuracy, training_time)
 
     # Save the model
-    model.save(f"./models/cifar_model_dropout_{dropout_values}.keras")
+    model.save(f"./models/cifar_model_dropout.keras")
     print("Model saved successfully.")
 
 if __name__ == "__main__":
