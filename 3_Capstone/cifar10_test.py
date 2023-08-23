@@ -1,5 +1,4 @@
 import tensorflow as tf
-import numpy as np
 
 from utils import get_difficult_examples, visualize
 
