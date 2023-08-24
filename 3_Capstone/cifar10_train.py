@@ -7,9 +7,8 @@ from tensorflow.keras import layers, models
 from tensorflow.keras.datasets import cifar10
 from tensorflow.keras.utils import to_categorical
 
-# TODO: Comment out when using HyperDrive from azureml SDK
-# import numpy as np
-# from azureml.core.run import Run
+import numpy as np
+from azureml.core.run import Run
 
 def save_to_json(model_history, test_accuracy, training_time):
     history = model_history.history
@@ -58,12 +57,11 @@ def main():
     dropout3 = args.dropout3
     epochs = args.epochs
 
-    # TODO: Comment out when using HyperDrive from azureml SDK
-    # run = Run.get_context()
-    # run.log("First layer dropout value:", np.float(dropout1))
-    # run.log("Second layer dropout value:", np.float(dropout2))
-    # run.log("Third layer dropout value:", np.float(dropout3))
-    # run.log("Number of Epoch:", np.int(epochs))
+    run = Run.get_context()
+    run.log("First layer dropout value:", np.float(dropout1))
+    run.log("Second layer dropout value:", np.float(dropout2))
+    run.log("Third layer dropout value:", np.float(dropout3))
+    run.log("Number of Epoch:", np.int(epochs))
 
     # Use seed for reproducibility
     tf.random.set_seed(42)
@@ -108,9 +106,8 @@ def main():
     # Evaluate the model
     _, test_accuracy = model.evaluate(test_images, test_labels, verbose=2)
 
-    # TODO: Comment out when using HyperDrive from azureml SDK
-    # run.log("accuracy", np.float(test_accuracy))
-    # run.log("training_time", np.float(training_time))
+    run.log("accuracy", np.float(test_accuracy))
+    run.log("training_time", np.float(training_time))
 
     save_to_json(history, test_accuracy, training_time)
 
