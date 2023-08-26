@@ -34,13 +34,13 @@ def main():
     )
     parser.add_argument(
         "--dropout2",
-        type=str,
+        type=float,
         default=0.125,
         help="The second layer dropout value for the CNN."
     )
     parser.add_argument(
         "--dropout3",
-        type=str,
+        type=float,
         default=0.25,
         help="The third layer dropout value for the CNN."
     )
