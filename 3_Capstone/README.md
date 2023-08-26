@@ -4,7 +4,7 @@
 
 Two project idea:
 - **MNIST or CIFAR-10 image recognition**
-  - Use GPU for training
+  - ~~Use GPU for training~~ Cannot use GPU because the udacity subscription is not authorized.
   - For AutoML, find the best metrics and params for training
   - For HyperDrive, experiment with multi-layer neural network. For example, first layer no or little dropout and the end of the layers bigger dropout. Inspired by the brain, lower features (edges, curves) are "hard-wired" (less dropout), the higher features (faces, concepts) are "soft-wired" (bigger dropout).
   - For Model deployment inference, rescale image (`test_img = test_img / 255.0`) and then convert images:

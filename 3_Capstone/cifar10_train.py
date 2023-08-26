@@ -10,6 +10,7 @@ from tensorflow.keras.utils import to_categorical
 import numpy as np
 from azureml.core.run import Run
 
+
 def save_to_json(model_history, test_accuracy, training_time):
     history = model_history.history
     results = {
@@ -66,6 +67,7 @@ def main():
     # Use seed for reproducibility
     tf.random.set_seed(42)
 
+    # TODO: The data exceed 300MB therefore the AML workspace got an exception
     # Load and preprocess CIFAR-10 dataset
     (train_images, train_labels), (test_images, test_labels) = cifar10.load_data()
     train_images, test_images = train_images / 255.0, test_images / 255.0
@@ -114,6 +116,7 @@ def main():
     # Save the model
     model.save(f"./models/cifar_model_dropout.keras")
     print("Model saved successfully.")
+
 
 if __name__ == "__main__":
     main()
