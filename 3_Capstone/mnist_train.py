@@ -52,9 +52,9 @@ def main():
     model = models.Sequential([
         layers.Flatten(input_shape=(28, 28)),
         layers.Dense(128, activation='relu'),
-        layers.Dropout(0.2),
+        layers.Dropout(dropout1),
         layers.Dense(32, activation='relu'),
-        layers.Dropout(0.2),
+        layers.Dropout(dropout2),
         layers.Dense(10, activation='softmax')
     ])
 
@@ -64,8 +64,8 @@ def main():
 
     start_time = time.time()
     history = model.fit(train_images, train_labels,
-            epochs=epochs, validation_data=(test_images, test_labels)
-            )
+                        epochs=epochs, validation_data=(test_images, test_labels)
+                        )
     end_time = time.time()
 
     training_time = end_time - start_time

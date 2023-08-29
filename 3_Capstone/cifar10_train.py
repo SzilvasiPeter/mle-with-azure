@@ -1,5 +1,4 @@
 import argparse
-import json
 import time
 
 from azureml.core.run import Run
@@ -60,8 +59,8 @@ def main():
     (train_images, train_labels), (test_images, test_labels) = cifar10.load_data()
     train_images, test_images = train_images / 255.0, test_images / 255.0
     train_labels, test_labels = (to_categorical(train_labels, 10),
-                                to_categorical(test_labels, 10)
-                                )
+                                 to_categorical(test_labels, 10)
+                                 )
 
     # Build the CNN model with Dropout
     model = models.Sequential([
@@ -87,8 +86,8 @@ def main():
     # Train the model
     start_time = time.time()
     history = model.fit(train_images, train_labels,
-              epochs=epochs, validation_data=(test_images, test_labels)
-              )
+                        epochs=epochs, validation_data=(test_images, test_labels)
+                        )
     end_time = time.time()
 
     training_time = end_time - start_time
@@ -102,7 +101,7 @@ def main():
     utils.save_to_json("cifar10", history, test_accuracy, training_time)
 
     # Save the model
-    model.save(f"./models/cifar_model_dropout.keras")
+    model.save("./models/cifar_model_dropout.keras")
     print("Model saved successfully.")
 
 
