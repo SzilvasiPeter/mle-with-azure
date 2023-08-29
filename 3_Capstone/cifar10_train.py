@@ -2,27 +2,15 @@ import argparse
 import json
 import time
 
+from azureml.core.run import Run
+
 import tensorflow as tf
 from tensorflow.keras import layers, models
 from tensorflow.keras.datasets import cifar10
 from tensorflow.keras.utils import to_categorical
 
-import numpy as np
-from azureml.core.run import Run
+import utils
 
-
-def save_to_json(model_history, test_accuracy, training_time):
-    history = model_history.history
-    results = {
-        "test_accuracy": test_accuracy,
-        "training_time": training_time
-        }
-    
-    with open("./models/training_history.json", "w") as file:
-        json.dump(history, file)
-
-    with open("./models/cifar_model_dropout.json", "w") as file:
-        json.dump(results, file, indent=4)
 
 def main():
     # Add arguments for HyperDrive hyper parameter sampling
@@ -59,10 +47,10 @@ def main():
     epochs = args.epochs
 
     run = Run.get_context()
-    run.log("First layer dropout value:", np.float(dropout1))
-    run.log("Second layer dropout value:", np.float(dropout2))
-    run.log("Third layer dropout value:", np.float(dropout3))
-    run.log("Number of Epoch:", np.int(epochs))
+    run.log("First layer dropout value:", dropout1)
+    run.log("Second layer dropout value:", dropout2)
+    run.log("Third layer dropout value:", dropout3)
+    run.log("Number of Epoch:", epochs)
 
     # Use seed for reproducibility
     tf.random.set_seed(42)
@@ -106,12 +94,12 @@ def main():
     training_time = end_time - start_time
 
     # Evaluate the model
-    _, test_accuracy = model.evaluate(test_images, test_labels, verbose=2)
+    _, test_accuracy = model.evaluate(test_images, test_labels)
 
-    run.log("accuracy", np.float(test_accuracy))
-    run.log("training_time", np.float(training_time))
+    run.log("accuracy", test_accuracy)
+    run.log("training_time", training_time)
 
-    save_to_json(history, test_accuracy, training_time)
+    utils.save_to_json("cifar10", history, test_accuracy, training_time)
 
     # Save the model
     model.save(f"./models/cifar_model_dropout.keras")

@@ -25,10 +25,10 @@ Activate it using `source .venv/bin/activate` on the Linux terminal or `source .
 
 If you don't have Tensorflow, install it using the following command:
 ```
-pip install tensorflow
+pip install tensorflow azureml-core
 ```
 
-Now, you can execute the scripts using `python <(cifar10|mnist)_(train|test).py>` commands. The models are saved in native Keras format under the `models` folder.
+Now, you can execute the scripts using `python <(cifar10|mnist)_(train|test).py>` commands. The models are saved in native Keras format under the `models` folder. The training logs are available in the `logs` directory.
 
 ## Dataset
 

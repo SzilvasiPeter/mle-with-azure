@@ -1,31 +1,84 @@
+import argparse
+import time
+
+from azureml.core.run import Run
+
 import tensorflow as tf
 from tensorflow.keras import layers, models
-from tensorflow.keras.datasets import cifar10
+from tensorflow.keras.datasets import mnist
 
-# Use seed for reproducibility
-tf.random.set_seed(42)
+import utils
 
-(train_images, train_labels), (test_images, test_labels) = cifar10.load_data()
+def main():
+    # Add arguments for HyperDrive hyper parameter sampling
+    parser = argparse.ArgumentParser()
+    parser.add_argument(
+        "--dropout1",
+        type=float,
+        default=0.1,
+        help="The first layer dropout value for the CNN."
+    )
+    parser.add_argument(
+        "--dropout2",
+        type=float,
+        default=0.3,
+        help="The second layer dropout value for the CNN."
+    )
+    parser.add_argument(
+        "--epochs",
+        type=int,
+        default=10,
+        help="Number of epochs to train the model"
+    )
 
-# Normalize pixel values to be between 0 and 1
-train_images, test_images = train_images / 255.0, test_images / 255.0
+    args = parser.parse_args()
+    dropout1 = args.dropout1
+    dropout2 = args.dropout2
+    epochs = args.epochs
 
-model = models.Sequential([
-    layers.Flatten(input_shape=(28, 28)),
-    layers.Dense(128, activation='relu'),
-    layers.Dropout(0.2),
-    layers.Dense(10, activation='softmax')
-])
+    run = Run.get_context()
+    run.log("First layer dropout value:", dropout1)
+    run.log("Second layer dropout value:", dropout2)
+    run.log("Number of Epoch:", epochs)
+    
+    # Use seed for reproducibility
+    tf.random.set_seed(42)
 
-model.compile(optimizer='adam',
-              loss='sparse_categorical_crossentropy',
-              metrics=['accuracy'])
+    (train_images, train_labels), (test_images, test_labels) = mnist.load_data()
 
-num_epochs = 10
-model.fit(train_images, train_labels,
-          epochs=num_epochs, validation_data=(test_images, test_labels)
-          )
+    # Normalize pixel values to be between 0 and 1
+    train_images, test_images = train_images / 255.0, test_images / 255.0
 
-# Save the model
-model.save("./models/mnist_model.keras")
-print("Model saved successfully.")
+    model = models.Sequential([
+        layers.Flatten(input_shape=(28, 28)),
+        layers.Dense(128, activation='relu'),
+        layers.Dropout(0.2),
+        layers.Dense(32, activation='relu'),
+        layers.Dropout(0.2),
+        layers.Dense(10, activation='softmax')
+    ])
+
+    model.compile(optimizer='adam',
+                loss='sparse_categorical_crossentropy',
+                metrics=['accuracy'])
+
+    start_time = time.time()
+    history = model.fit(train_images, train_labels,
+            epochs=epochs, validation_data=(test_images, test_labels)
+            )
+    end_time = time.time()
+
+    training_time = end_time - start_time
+    _, test_accuracy = model.evaluate(test_images, test_labels)
+
+    run.log("accuracy", test_accuracy)
+    run.log("training_time", training_time)
+
+    utils.save_to_json("mnist", history, test_accuracy, training_time)
+
+    # Save the model
+    model.save("./models/mnist_model.keras")
+
+
+if __name__ == "__main__":
+    main()
