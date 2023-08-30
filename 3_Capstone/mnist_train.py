@@ -7,7 +7,8 @@ import tensorflow as tf
 from tensorflow.keras import layers, models
 from tensorflow.keras.datasets import mnist
 
-import utils
+# import utils
+
 
 def main():
     # Add arguments for HyperDrive hyper parameter sampling
@@ -74,7 +75,7 @@ def main():
     run.log("accuracy", test_accuracy)
     run.log("training_time", training_time)
 
-    utils.save_to_json("mnist", history, test_accuracy, training_time)
+    # utils.save_to_json("mnist", history, test_accuracy, training_time)
 
     # Save the model
     model.save("./models/mnist_model.keras")
