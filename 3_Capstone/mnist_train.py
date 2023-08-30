@@ -1,4 +1,5 @@
 import argparse
+import os
 import time
 
 from azureml.core.run import Run
@@ -6,8 +7,6 @@ from azureml.core.run import Run
 import tensorflow as tf
 from tensorflow.keras import layers, models
 from tensorflow.keras.datasets import mnist
-
-# import utils
 
 
 def main():
@@ -64,7 +63,7 @@ def main():
                 metrics=['accuracy'])
 
     start_time = time.time()
-    history = model.fit(train_images, train_labels,
+    model.fit(train_images, train_labels,
                         epochs=epochs, validation_data=(test_images, test_labels)
                         )
     end_time = time.time()
@@ -75,10 +74,9 @@ def main():
     run.log("accuracy", test_accuracy)
     run.log("training_time", training_time)
 
-    # utils.save_to_json("mnist", history, test_accuracy, training_time)
-
-    # Save the model
-    model.save("./models/mnist_model.keras")
+    # Hyperdrive can only save the model into the `outputs` folder
+    os.makedirs("./outputs", exist_ok=True)
+    model.save("./outputs/mnist_model.keras")
 
 
 if __name__ == "__main__":
